@@ -1,0 +1,35 @@
+; PROGRAMMER    : Rolf Kinder Gilet  ID 5734407
+;
+; CLASS         : CDA 3103   TT 9:30 AM
+;
+; INSTRUCTOR    : Norman Pestaina  ECS 340
+;
+; ASSIGNMENT    : #1 CharCount   DUE Sunday 11/06
+;
+; CERTIFICATION : I certify that this work is my own and that
+;                 none of it is the work of any other person.
+;
+0011 0000 0000 0000  ; Load Address
+0101 010 010 1 00000 ; Clear R2
+0010 011 0 0001 0000 ; Set pointer R3
+1111 0000 0010 0011  ; Trap 23 Get input in R0 (default)
+0110 001 011 00 0000 ; Load 1st char in R1
+;Top of Loop
+0001 100 001 1 11100 ; Check if char is EOT R4 = R1 - 4
+0000 010 0 0000 1000 ; If yes skip the loop (R1 == 4)
+1001 001 001 11 1111 ; Not R1
+0001 001 001 1 00001 ; R1++
+0001 001 001 000 000 ; R1 = R0 - R1 (compare input and char at R1)
+0000 101 0 0000 0001 ; Skip count if input not equal to char at R1
+0001 010 010 1 00001 ; Increment count R2++ 
+0001 011 011 1 00001 ; Increment pointer R3++
+0110 001 011 00 0000 ; Load next char in R1
+0000 111 1 1111 0110 ; JUMP to Top of Loop
+;Loop Exit
+0010 000 0 0000 0100 ; Load ASCII '0' in R0
+0001 000 000 0 00010 ; convert count into ASCII
+1111 0000 0010 0001  ; Print count (Trap 21)
+1111 0000 0010 0101  ; Halt (Trap 25)
+;Data / Variables
+0011 0001 0000 0000  ; String address
+0000 0000 0011 0000  ; x30 ASCII '0'
